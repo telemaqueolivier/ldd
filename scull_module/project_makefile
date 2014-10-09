@@ -1,0 +1,7 @@
+deploy :
+	@echo ${CWD}
+	echo ${PASSWD} | sudo -S mount -o loop /usr/local/data/project/rootfs/rootfs.img /mnt
+	echo ${PASSWD} | sudo -S cp ${CWD}/scull.ko /mnt/root
+	echo ${PASSWD} | sudo -S cp ${CWD}/load_scull.sh /mnt/root
+	echo ${PASSWD} | sudo -S cp ${CWD}/../test_scull_module/Debug/test_scull_module /mnt/root
+	echo ${PASSWD} | sudo -S umount /mnt
