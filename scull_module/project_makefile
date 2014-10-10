@@ -1,7 +1,12 @@
+ROOTFS=/usr/local/data/project/rootfs
+LINUX_KERNEL_VERSION=3.14.5
+
 deploy :
-	@echo ${CWD}
-	echo ${PASSWD} | sudo -S mount -o loop /usr/local/data/project/rootfs/rootfs.img /mnt
-	echo ${PASSWD} | sudo -S cp ${CWD}/scull.ko /mnt/root
-	echo ${PASSWD} | sudo -S cp ${CWD}/load_scull.sh /mnt/root
-	echo ${PASSWD} | sudo -S cp ${CWD}/../test_scull_module/Debug/test_scull_module /mnt/root
-	echo ${PASSWD} | sudo -S umount /mnt
+	echo $(PASSWD) | sudo -S mount -o loop $(ROOTFS)/rootfs.img /mnt
+	echo $(PASSWD) | sudo -S cp $(CWD)/scull.ko /mnt/root
+	echo $(PASSWD) | sudo -S cp $(CWD)/load_scull.sh /mnt/root
+	echo $(PASSWD) | sudo -S cp $(CWD)/../test_scull_module/Debug/test_scull_module /mnt/root
+	echo $(PASSWD) | sudo -S umount /mnt
+	
+launch :
+	gnome-terminal -e "qemu-system-x86_64 -hda $(ROOTFS)/rootfs.img -kernel $(ROOTFS)/resources/linux-$(LINUX_KERNEL_VERSION)/arch/x86/boot/bzImage -append \"root=/dev/sda rw rootfstype=ext4 console=ttyS0\" -nographic"
