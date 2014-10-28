@@ -11,6 +11,7 @@
 #include <linux/module.h>
 #include <linux/fcntl.h>
 #include <linux/fs.h>
+#include <linux/types.h>
 
 loff_t scull_llseek(struct file *filepp, loff_t offset, int e);
 ssize_t scull_read(struct file *filepp, char __user *buf, size_t size, loff_t *offset);

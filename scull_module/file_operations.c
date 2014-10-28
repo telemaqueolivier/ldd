@@ -9,8 +9,7 @@
 #include "scull_dev.h"
 #include <linux/ioctl.h>
 
-int scull_open(struct inode *inode, struct file *filep)
-{
+int scull_open(struct inode *inode, struct file *filep) {
 	struct scull_dev *dev; /* device information */
 
 	dev = container_of(inode->i_cdev, struct scull_dev, cdev);
@@ -47,36 +46,29 @@ loff_t scull_llseek(struct file *filep, loff_t offset, int whence) {
 	if (newpos < 0)
 		return -EINVAL;
 	filep->f_pos = newpos;
-	printk(KERN_INFO "scull_llseek offset = %u\n", newpos);
+
 	return newpos;
 }
 
 static void scull_find_quantum(struct scull_dev *dev, loff_t file_pos,
-		int *item_pos, int *qset_pos, int *quantum_pos)
-{
+		int *item_pos, int *qset_pos, int *quantum_pos) {
 	int quantum_size = dev->quantum_size;
 	int item_size = quantum_size * dev->qset_size; /* how many bytes in the listitem */
 	int rest;
 
 	*item_pos = (long) file_pos / item_size;
-	printk(KERN_INFO "item_pos = %u\n", *item_pos);
 	rest = (long) file_pos % item_size;
 	*qset_pos = rest / quantum_size;
-	printk(KERN_INFO "qset_pos = %u\n", *qset_pos);
 	*quantum_pos = rest % quantum_size;
-	printk(KERN_INFO "quantum_pos = %u\n", *quantum_pos);
 }
 
 ssize_t scull_read(struct file *filep, char __user *buf, size_t count,
-		loff_t *file_pos)
-{
+		loff_t *file_pos) {
 	struct scull_dev *dev = filep->private_data;
 	struct quantum_set *qset;
 	int quantum_size = dev->quantum_size;
 	int item_pos, qset_pos, quantum_pos;
 	ssize_t retval = 0;
-	int i;
-	char c = 65;
 
 	if (down_interruptible(&dev->sem))
 		return -ERESTARTSYS;
@@ -118,8 +110,7 @@ ssize_t scull_read(struct file *filep, char __user *buf, size_t count,
 }
 
 ssize_t scull_write(struct file *filep, const char __user *buf, size_t count,
-		loff_t *file_pos)
-{
+		loff_t *file_pos) {
 	struct scull_dev *dev = filep->private_data;
 	struct quantum_set *qset;
 	int quantum_size = dev->quantum_size;
@@ -130,7 +121,7 @@ ssize_t scull_write(struct file *filep, const char __user *buf, size_t count,
 		return -ERESTARTSYS;
 
 	scull_find_quantum(dev, *file_pos, &item_pos, &qset_pos, &quantum_pos);
-	printk(KERN_INFO "file_pos = %lu\n",(long) *file_pos);
+
 	/* follow the list up to the right position */
 	qset = qset_list_at(dev->list, item_pos)->qset;
 
@@ -146,10 +137,9 @@ ssize_t scull_write(struct file *filep, const char __user *buf, size_t count,
 		retval = -EFAULT;
 		goto out;
 	}
-	printk(KERN_INFO "[0][%c] [1][%c]\n",quantum_at(qset, qset_pos, quantum_pos)[0], quantum_at(qset, qset_pos, quantum_pos)[1]);
+
 	*file_pos += count;
 	retval = count;
-	printk(KERN_INFO "file_pos = %lu\n",(long) *file_pos);
 	/* update the size */
 	if (dev->size < *file_pos)
 		dev->size = *file_pos;
@@ -162,12 +152,9 @@ ssize_t scull_write(struct file *filep, const char __user *buf, size_t count,
 #define IOC_TEST _IO(MAGIC_NUM, 0)
 #define IOC_GET_QUANTUM _IOR(MAGIC_NUM, 1, unsigned int)
 
-long scull_ioctl(struct file *filep, unsigned int cmd, unsigned long arg)
-{
+long scull_ioctl(struct file *filep, unsigned int cmd, unsigned long arg) {
 	int ret = 0;
 	int ok;
-
-	printk(KERN_INFO "IOC_GET_QUANTUM = %lu IOC_TEST = %u\n",IOC_GET_QUANTUM, IOC_TEST);
 
 	if (_IOC_DIR(cmd) & _IOC_READ)
 		ok = access_ok(VERIFY_WRITE, (void __user *) arg, _IOC_SIZE(cmd));
@@ -193,11 +180,10 @@ long scull_ioctl(struct file *filep, unsigned int cmd, unsigned long arg)
 	return ret;
 }
 
-int scull_release(struct inode *inode, struct file *filep)
-{
-//	struct scull_dev *dev = filep->private_data; /* device information */
-//
-//	qset_list_free(dev->list);
+int scull_release(struct inode *inode, struct file *filep) {
+	struct scull_dev *dev = filep->private_data; /* device information */
+
+	qset_list_free(dev->list);
 
 	return 0;
 }

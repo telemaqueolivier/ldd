@@ -19,6 +19,7 @@ int main(void) {
 	int fd = open("/dev/scull0", O_RDWR);
 	int count;
 	char buf[] = "le chat courait dans la prairie";
+	char buf2[30] = {'\0'};
 	unsigned long quantum;
 
 	if (fd == -1)
@@ -28,18 +29,18 @@ int main(void) {
 	printf("%d bytes wrote\n", count);
 
 	lseek(fd, -32, SEEK_CUR);
-	count = read(fd, buf, sizeof(buf));
-	buf[29] = '\0';
-	printf("%d bytes read\nbuf =\"%s\"\n", count, buf);
-	count = read(fd, buf, sizeof(buf));
-	buf[29] = '\0';
-	printf("%d bytes read\nbuf =\"%s\"\n", count, buf);
-	count = read(fd, buf, sizeof(buf) - 8);
-	buf[sizeof(buf) - 8 - 1] = '\0';
-	printf("%d bytes read\nbuf =\"%s\"\n", count, buf);
-	count = read(fd, buf, sizeof(buf));
-	buf[sizeof(buf) -1] = '\0';
-	printf("%d bytes read\nbuf =\"%s\"\n", count, buf);
+	count = read(fd, buf2, sizeof(buf2));
+	buf2[29] = '\0';
+	printf("%d bytes read\nbuf2 =\"%s\"\n", count, buf2);
+	count = read(fd, buf2, sizeof(buf2));
+	buf2[29] = '\0';
+	printf("%d bytes read\nbuf2 =\"%s\"\n", count, buf2);
+	count = read(fd, buf2, sizeof(buf2) - 8);
+	buf2[sizeof(buf2) - 8 - 1] = '\0';
+	printf("%d bytes read\nbuf2 =\"%s\"\n", count, buf2);
+	count = read(fd, buf2, sizeof(buf2));
+	buf2[sizeof(buf2) -1] = '\0';
+	printf("%d bytes read\nbuf2 =\"%s\"\n", count, buf2);
 
 	ioctl(fd, 65024);
 	perror("ioctl");

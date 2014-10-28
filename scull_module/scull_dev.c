@@ -9,6 +9,7 @@
 #include <linux/slab.h>
 #include "scull_dev.h"
 #include "file_operations.h"
+#include "qset_list.h"
 
 scull_dev * scull_construct(int index,
 							dev_t dev_num,
