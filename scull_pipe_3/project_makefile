@@ -1,12 +1,13 @@
 ROOTFS=/usr/local/data/project/rootfs
 LINUX_KERNEL_VERSION=3.14.5
+MODULE_NAME=sleepy
 
 deploy :
 	echo $(PASSWD) | sudo -S mount -o loop $(ROOTFS)/rootfs.img /mnt
-	echo $(PASSWD) | sudo -S cp $(CWD)/scull.ko /mnt/root
-	echo $(PASSWD) | sudo -S cp $(CWD)/load_scull.sh /mnt/root
-	echo $(PASSWD) | sudo -S cp $(CWD)/unload_scull.sh /mnt/root
-	echo $(PASSWD) | sudo -S cp $(CWD)/../test_scull_module/Debug/test_scull_module /mnt/root
+	echo $(PASSWD) | sudo -S cp $(CWD)/$(MODULE_NAME).ko /mnt/root
+	echo $(PASSWD) | sudo -S cp $(CWD)/load_sleepy.sh /mnt/root
+	echo $(PASSWD) | sudo -S cp $(CWD)/unload_sleepy.sh /mnt/root
+	echo $(PASSWD) | sudo -S cp $(CWD)/../test_scull_pipe_3/Debug/test_scull_pipe_3 /mnt/root
 	echo $(PASSWD) | sudo -S umount /mnt
 	
 launch :

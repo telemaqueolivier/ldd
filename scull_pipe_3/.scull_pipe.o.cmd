@@ -1,0 +1,1 @@
+cmd_/usr/local/data/project/dev/wrk_space2/ldd/scull_pipe_3/scull_pipe.o := ld -m elf_x86_64   -r -o /usr/local/data/project/dev/wrk_space2/ldd/scull_pipe_3/scull_pipe.o /usr/local/data/project/dev/wrk_space2/ldd/scull_pipe_3/main.o /usr/local/data/project/dev/wrk_space2/ldd/scull_pipe_3/scull_pipe_dev.o /usr/local/data/project/dev/wrk_space2/ldd/scull_pipe_3/file_operations.o 

@@ -183,7 +183,7 @@ long scull_ioctl(struct file *filep, unsigned int cmd, unsigned long arg) {
 int scull_release(struct inode *inode, struct file *filep) {
 	struct scull_dev *dev = filep->private_data; /* device information */
 
-	qset_list_free(dev->list);
+	//qset_list_free(dev->list);
 
 	return 0;
 }
