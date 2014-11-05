@@ -1,6 +1,0 @@
-eclipse.preferences.version=1
-environment/project/cdt.managedbuild.toolchain.gnu.base.307735518/LINUX_KERNEL/delimiter=\:
-environment/project/cdt.managedbuild.toolchain.gnu.base.307735518/LINUX_KERNEL/operation=append
-environment/project/cdt.managedbuild.toolchain.gnu.base.307735518/LINUX_KERNEL/value=/usr/local/data/project/rootfs/resources/linux-3.14.5
-environment/project/cdt.managedbuild.toolchain.gnu.base.307735518/append=true
-environment/project/cdt.managedbuild.toolchain.gnu.base.307735518/appendContributed=true
